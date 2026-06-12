@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Starter Kit — Tools & Prompts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Courier+Prime&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0A0F1E;
+    --card: #131A2E;
+    --orange: #FF6B35;
+    --cyan: #00D4FF;
+    --green: #00E676;
+    --text: #E8EDF5;
+    --muted: #8899AA;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, #0A0F1E 0%, #1a2a4a 100%);
+    padding: 36px 20px 28px;
+    text-align: center;
+    border-bottom: 3px solid var(--orange);
+  }
+  .hero-emoji { font-size: 48px; margin-bottom: 8px; }
+  .hero h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .hero p {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 340px;
+    margin: 0 auto 14px;
+    line-height: 1.6;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--cyan);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* SECTION */
+  .section {
+    padding: 24px 16px 8px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(0,212,255,0.2);
+  }
+
+  /* TOOL CARDS */
+  .tool-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .tool-card:active { transform: scale(0.98); }
+  .tool-card:hover { border-color: var(--orange); }
+  .tool-left { display: flex; align-items: center; gap: 12px; }
+  .tool-icon {
+    font-size: 26px;
+    width: 44px;
+    height: 44px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .tool-info {}
+  .tool-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .tool-url { font-size: 11px; color: var(--orange); margin: 1px 0; }
+  .tool-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .tool-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-free { background: rgba(0,230,118,0.15); color: var(--green); border: 1px solid rgba(0,230,118,0.3); }
+  .badge-earn { background: rgba(255,107,53,0.15); color: var(--orange); border: 1px solid rgba(255,107,53,0.3); }
+
+  /* PROMPT CARDS */
+  .prompt-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--color, var(--cyan));
+  }
+  .prompt-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .prompt-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color, var(--cyan));
+    color: var(--bg);
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .prompt-label { font-size: 12px; font-weight: 700; color: var(--color, var(--cyan)); }
+  .prompt-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11.5px;
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+    padding: 10px 12px;
+    border-radius: 8px;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.06);
+    border: none;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.1); }
+  .copy-btn.copied { color: var(--green); }
+
+  /* CTA */
+  .cta-section {
+    background: linear-gradient(135deg, #1a0a00 0%, #0A0F1E 100%);
+    margin: 16px;
+    border-radius: 14px;
+    padding: 22px 20px;
+    text-align: center;
+    border: 2px solid var(--orange);
+  }
+  .cta-section h2 {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .cta-section p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .cta-btn {
+    display: block;
+    background: var(--orange);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 10px;
+    transition: opacity 0.2s;
+  }
+  .cta-btn:active { opacity: 0.85; }
+  .cta-btn2 {
+    display: block;
+    background: transparent;
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid var(--cyan);
+    border-radius: 10px;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 20px 16px 0;
+    font-size: 10px;
+    color: var(--muted);
+    font-style: italic;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-emoji">📱</div>
+  <h1>The Phone In Your Hand<br>Is A Power Tool</h1>
+  <p>Your AI Starter Kit — free tools, ready-to-use prompts, and 3 real income paths.</p>
+  <div class="hero-badge">Everything here is FREE to start</div>
+</div>
+
+<!-- FREE AI TOOLS -->
+<div class="section">
+  <div class="section-title">🤖 Free AI Tools — Open Right Now</div>
+
+  <a class="tool-card" href="https://chat.openai.com" target="_blank">
+    <div class="tool-left">
+      <div class="tool-icon">🧠</div>
+      <div class="tool-info">
+        <div class="tool-name">ChatGPT</div>
+        <div class="tool-url">chat.openai.com</div>
+        <div class="tool-desc">Most popular AI. Write, ask, create — anything.</div>
+      </div>
+    </div>
+    <span class="tool-badge badge-free">FREE</span>
+  </a>
+
+  <a class="tool-card" href="https://claude.ai" target="_blank">
+    <div class="tool-left">
+      <div class="tool-icon">✨</div>
+      <div class="tool-info">
+        <div class="tool-name">Claude</div>
+        <div class="tool-url">claude.ai</div>
+        <div class="tool-desc">Great for resumes, long writing, and thoughtful answers.</div>
+      </div>
+    </div>
+    <span class="tool-badge badge-free">FREE</span>
+  </a>
+
+  <a class="tool-card" href="https://gemini.google.com" target="_blank">
+    <div class="tool-left">
+      <div class="tool-icon">🔵</div>
+      <div class="tool-info">
+        <div class="tool-name">Google Gemini</div>
+        <div class="tool-url">gemini.google.com</div>
+        <div class="tool-desc">Already on your Android. Works with Google apps.</div>
+      </div>
+    </div>
+    <span class="tool-badge badge-free">FREE</span>
+  </a>
+
+  <a class="tool-card" href="https://www.canva.com" target="_blank">
+    <div class="tool-left">
+      <div class="tool-icon">🎨</div>
+      <div class="tool-info">
+        <div class="tool-name">Canva AI</div>
+        <div class="tool-url">canva.com</div>
+        <div class="tool-desc">Design logos, flyers, and posts with AI help. No skills needed.</div>
+      </div>
+    </div>
+    <span class="tool-badge badge-free">FREE</span>
+  </a>
+</div>
+
+<!-- WHERE TO GET PAID -->
+<div class="section">
+  <div class="section-title">💰 Where to Get Paid for AI Skills</div>
+
+  <a class="tool-card" href="https://www.fiverr.com" target="_blank">
+    <div class="tool-left">
+      <div class="tool-icon">🛒</div>
+      <div class="tool-info">
+        <div class="tool-name">Fiverr</div>
+        <div class="tool-url">fiverr.com</div>
+        <div class="tool-desc">Sell services starting at $5. Bios, posts, designs — AI does the work.</div>
+      </div>
+    </div>
+    <span class="tool-badge badge-earn">EARN</span>
+  </a>
+
+  <a class="tool-card" href="https://www.upwork.com" target="_blank">
+    <div class="tool-left">
+      <div class="tool-icon">💼</div>
+      <div class="tool-info">
+        <div class="tool-name">Upwork</div>
+        <div class="tool-url">upwork.com</div>
+        <div class="tool-desc">Freelance platform for higher-paying clients. AI writers earn $50–$150/hr.</div>
+      </div>
+    </div>
+    <span class="tool-badge badge-earn">EARN</span>
+  </a>
+</div>
+
+<!-- 3 STARTER PROMPTS -->
+<div class="section">
+  <div class="section-title">⚡ 3 Prompts to Try Right Now</div>
+
+  <div class="prompt-card" style="--color:#FF6B35;">
+    <div class="prompt-header">
+      <div class="prompt-dot">1</div>
+      <div class="prompt-label">The Bio Builder</div>
+    </div>
+    <div class="prompt-text" id="p1">"Write a professional bio for [YOUR NAME]. I'm [AGE] years old and I'm good at [YOUR SKILL]. Write it like I'm applying for a job."</div>
+    <button class="copy-btn" onclick="copyPrompt('p1', this)">📋 Copy prompt</button>
+  </div>
+
+  <div class="prompt-card" style="--color:#00D4FF;">
+    <div class="prompt-header">
+      <div class="prompt-dot">2</div>
+      <div class="prompt-label">The Business Generator</div>
+    </div>
+    <div class="prompt-text" id="p2">"Give me 5 business ideas for someone who is 20 years old, has no money, and only has a phone."</div>
+    <button class="copy-btn" onclick="copyPrompt('p2', this)">📋 Copy prompt</button>
+  </div>
+
+  <div class="prompt-card" style="--color:#00E676;">
+    <div class="prompt-header">
+      <div class="prompt-dot">3</div>
+      <div class="prompt-label">The Future Finder</div>
+    </div>
+    <div class="prompt-text" id="p3">"What careers will still be in demand in 2035 and how can someone with no college degree get started in them today?"</div>
+    <button class="copy-btn" onclick="copyPrompt('p3', this)">📋 Copy prompt</button>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>⚡ Your Assignment Tonight</h2>
+  <p>Open ChatGPT or Claude. Type ONE question about something you actually want to do with your life. See what comes back.</p>
+  <a href="https://chat.openai.com" class="cta-btn" target="_blank">Open ChatGPT Now →</a>
+  <a href="https://claude.ai" class="cta-btn2" target="_blank">Or open Claude →</a>
+</div>
+
+<div class="footer">
+  "The phone in your hand is a power tool. Will you pick it up and build something?"<br>
+  — Pastor Charles D. Martin
+</div>
+
+<script>
+function copyPrompt(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy prompt';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
